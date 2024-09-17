@@ -186,6 +186,7 @@ class CV(models.Model):
 
     cvname = models.CharField(max_length=100, verbose_name="Nombre CV")
     name = models.CharField(max_length=300, verbose_name="Nombre completo")
+    range = models.CharField(max_length=300, verbose_name="Cargo")
     photo = models.ImageField(upload_to="profile/", verbose_name="Foto", blank=True, null=True)
     contact_data = models.ForeignKey(Contact_data, on_delete=models.CASCADE, verbose_name="Datos de contacto")
     resume = models.TextField(verbose_name="Resumen Profesional")

@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
+from cv_generator import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('export_cv/', views.export_pdf, name = 'export_cv'),
 ]
 
 if settings.DEBUG:
