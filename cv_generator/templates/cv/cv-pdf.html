@@ -1,0 +1,116 @@
+{% extends "cv/base-pdf.html" %}
+{% block content %}
+
+<div class="row" style="background-color: #58355e; color: #fffafb; height:300px; ">
+    <div class="col-5">
+        <img src="{{base_url}}{{cv.photo.url}}" style="height:250px; width:250px; margin-top: 20px; margin-left: 50px; border-radius: 50%;"/>
+    </div>
+    <div class="col">
+        <h1 style="margin-top:85px"><b>{{cv.name}}</b></h1>
+        <h2>{{cv.range}}</h2>
+    </div>
+</div>
+<div class="row" style="width:100%; min-height: 1285px; margin:0;">
+    <div class="col-4 toolbar">
+        <h3>Datos de contacto</h3>
+        <hr>
+        <ul>
+            <li>Ciudad: {{cv.contact_data.postal_code }}, {{ cv.contact_data.city }}. {{cv.contact_data.country}}</li>
+            <li>Teléfono: {{cv.contact_data.phone}}</li>
+            <li>Email: {{cv.contact_data.email}}</li>
+            <li>LinkedIN: <a href="{{cv.contact_data.linkedin}}">guillermogranadosgomez/</a></li>
+        </ul>
+
+        <h3>Stack de desarrollo</h3>
+        <hr>
+        <h4>Principales</h4>
+        {% for stack in cv.program_languages.all %}
+            {% if stack.primary_language %}
+            <span><img src="{{base_url}}{{stack.logo.url}}" style="height:30px"> <b>{{stack.name}}</b></span>
+            <br>
+            <ul>
+                {% for technology in cv.frameworks.all %}
+                    {% if technology.language == stack %}
+                    <li style="list-style: none;">
+                        <img src="{{base_url}}{{technology.logo.url}}" style="height:20px; width:20px;"> {{technology.name}}
+                    </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+        {% endfor %}
+        <h4>Secundario</h4>
+            {% for stack in cv.program_languages.all %}
+                {% if not stack.primary_language %}
+                <img src="{{base_url}}{{stack.logo.url}}" style="height:30px; margin:10px;">
+                    {% for technology in cv.frameworks.all %}
+                        {% if technology.language == stack %}
+                        <img src="{{base_url}}{{technology.logo.url}}" style="height:30px; margin:10px;">
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        
+        <h3>Herramientas</h3>
+        <hr>
+        <ul>
+            {% for tool in cv.tools.all %}
+                <li>{{tool.name}}</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Idiomas</h3>
+        <hr>
+        <ul>
+            {% for language in cv.languages.all %}
+                <li>{{language.name}} - <small>{{language.level}}</small></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col content">
+        <h3>Sobre mi</h3>
+        <hr>
+        <p>{{cv.resume|linebreaksbr}}</p>
+
+        <h3>Experiencia profesional</h3>
+        <hr>
+        {% for experience in cv.experiences.all %}
+        <h4 style="margin-bottom: 0px">{{experience.job}} - <small>{{experience.company}}</small></h4>
+        <small style="margin-top: 0px">
+            {{experience.start_date|date:"F Y"}} - {% if experience.actually_job %} Actualidad {% else %}{{experience.end_date|date:"F Y"}}{%endif%}
+        </small>
+        <p><small>{{experience.resume|linebreaksbr}}</small></p>
+        {% endfor %}
+    </div>
+</div>
+<br>
+<div class="row" style="width:100%; min-height: 1540px; margin:0; background-color: #7de2d1;">
+    <div class="col content">
+        <h3>Formación</h3>
+        <hr>
+        {% for education in cv.education.all %}
+            <h4 style="margin-bottom: 0px">{{education.name}} - <small>{{education.school}}</small></h4>
+            <small style="margin-top: 0px">
+                {{education.start_date|date:"F Y"}} - {{education.end_date|date:"F Y"}}
+            </small>
+            <p><small>{{education.resume|linebreaksbr}}</small></p>
+        {% endfor %}
+
+        <h3>Certificados</h3>
+        <hr>
+        <ul>
+            {% for certification in cv.certification.all %}
+                <li style="margin-bottom: 0px">{{certification.name}} - <small>{{certification.start_date|date:"F Y"}} / {{certification.school}}</small></li>
+            {% endfor %}
+        </ul>
+
+        <h3>Proyectos personales</h3>
+        <hr>
+        <ul>
+            {% for link in cv.urls_for_interest.all %}
+                <li style="margin-bottom: 0px">{{link.name}}: <small><a href="{{link.url}}" target="_blank" style="color:#58355e">{{link.url}}</a></small></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
